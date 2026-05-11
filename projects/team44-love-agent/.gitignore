@@ -1,0 +1,17 @@
+.codex/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Office/generated files
+*.pptx
+*.ppt
+*.xlsx
+
+# Local secrets
+.env
+.env.*
+!.env.example
+!**/.env.example
+

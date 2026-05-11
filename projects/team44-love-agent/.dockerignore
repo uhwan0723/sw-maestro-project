@@ -1,0 +1,12 @@
+.git
+.codex
+.omx
+local-test
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.venv
+venv
+node_modules
