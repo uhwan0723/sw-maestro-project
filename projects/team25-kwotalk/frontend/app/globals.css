@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-app-bg: var(--app-bg);
+  --color-panel: var(--panel-bg);
+  --color-surface: var(--surface-bg);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-strong: var(--surface-strong);
+  --color-app-border: var(--border);
+  --color-app-text: var(--text);
+  --color-app-muted: var(--text-muted);
+  --color-app-subtle: var(--text-subtle);
+  --color-action: var(--button-bg);
+  --color-action-hover: var(--button-bg-hover);
+  --color-action-text: var(--button-text);
+  --color-action-disabled: var(--button-disabled-bg);
+  --color-action-disabled-text: var(--button-disabled-text);
+  --color-app-overlay: var(--overlay);
+}
+
+:root {
+  color-scheme: light;
+  --app-bg: #f8fafc;
+  --panel-bg: #ffffff;
+  --surface-bg: #ffffff;
+  --surface-muted: #f4f4f5;
+  --surface-strong: #e4e4e7;
+  --border: #e4e4e7;
+  --text: #18181b;
+  --text-muted: #52525b;
+  --text-subtle: #71717a;
+  --button-bg: #18181b;
+  --button-bg-hover: #27272a;
+  --button-text: #fafafa;
+  --button-disabled-bg: #e4e4e7;
+  --button-disabled-text: #a1a1aa;
+  --overlay: rgb(24 24 27 / 45%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --app-bg: #09090b;
+    --panel-bg: #18181b;
+    --surface-bg: #27272a;
+    --surface-muted: #27272a;
+    --surface-strong: #3f3f46;
+    --border: #3f3f46;
+    --text: #fafafa;
+    --text-muted: #a1a1aa;
+    --text-subtle: #71717a;
+    --button-bg: #f4f4f5;
+    --button-bg-hover: #ffffff;
+    --button-text: #09090b;
+    --button-disabled-bg: #3f3f46;
+    --button-disabled-text: #71717a;
+    --overlay: rgb(9 9 11 / 70%);
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --app-bg: #f8fafc;
+  --panel-bg: #ffffff;
+  --surface-bg: #ffffff;
+  --surface-muted: #f4f4f5;
+  --surface-strong: #e4e4e7;
+  --border: #e4e4e7;
+  --text: #18181b;
+  --text-muted: #52525b;
+  --text-subtle: #71717a;
+  --button-bg: #18181b;
+  --button-bg-hover: #27272a;
+  --button-text: #fafafa;
+  --button-disabled-bg: #e4e4e7;
+  --button-disabled-text: #a1a1aa;
+  --overlay: rgb(24 24 27 / 45%);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --app-bg: #09090b;
+  --panel-bg: #18181b;
+  --surface-bg: #27272a;
+  --surface-muted: #27272a;
+  --surface-strong: #3f3f46;
+  --border: #3f3f46;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-subtle: #71717a;
+  --button-bg: #f4f4f5;
+  --button-bg-hover: #ffffff;
+  --button-text: #09090b;
+  --button-disabled-bg: #3f3f46;
+  --button-disabled-text: #71717a;
+  --overlay: rgb(9 9 11 / 70%);
+}
+
+@keyframes chat-progress-dot-pulse {
+  0% {
+    opacity: 40%;
+    transform: scale(0.86);
+  }
+
+  50% {
+    opacity: 100%;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 40%;
+    transform: scale(0.86);
+  }
+}
+
+@keyframes chat-progress-status-sheen {
+  0% {
+    background-position: 120% 50%;
+  }
+
+  100% {
+    background-position: -120% 50%;
+  }
+}
+
+.chat-progress-status {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.chat-progress-status > span:last-child {
+  width: fit-content;
+  max-width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--text-muted) 0%,
+    var(--text-muted) 38%,
+    var(--text) 50%,
+    var(--text-muted) 62%,
+    var(--text-muted) 100%
+  );
+  background-size: 220% 100%;
+  background-clip: text;
+  color: transparent;
+  animation: chat-progress-status-sheen 2.4s ease-in-out infinite;
+}
+
+.chat-progress-dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  flex: none;
+  border-radius: 9999px;
+  background: var(--text-muted);
+  animation: chat-progress-dot-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-progress-status > span:last-child,
+  .chat-progress-dot {
+    background: none;
+    animation: none;
+  }
+
+  .chat-progress-status > span:last-child {
+    color: var(--text-muted);
+  }
+
+  .chat-progress-dot {
+    background: var(--text-muted);
+  }
+}

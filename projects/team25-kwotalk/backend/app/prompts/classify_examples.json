@@ -1,0 +1,98 @@
+[
+  {
+    "input": "사고 내고 그냥 가버린 사람 어떻게 처벌받나요?",
+    "expected": {
+      "case_type": "HIT_AND_RUN",
+      "needs_settlement": false,
+      "confidence": 0.95
+    }
+  },
+  {
+    "input": "뺑소니 당해서 다쳤어요. 합의금 얼마나 받을 수 있나요?",
+    "expected": {
+      "case_type": "HIT_AND_RUN",
+      "needs_settlement": true,
+      "confidence": 0.95
+    }
+  },
+  {
+    "input": "중앙선 넘어서 역주행하다 사고 났어요",
+    "expected": {
+      "case_type": "WRONG_WAY_DRIVING",
+      "needs_settlement": false,
+      "confidence": 0.9
+    }
+  },
+  {
+    "input": "고속도로 역주행 운전자 처벌 어떻게 되나요?",
+    "expected": {
+      "case_type": "WRONG_WAY_DRIVING",
+      "needs_settlement": false,
+      "confidence": 0.95
+    }
+  },
+  {
+    "input": "술 마시고 운전하다 단속됐어요",
+    "expected": {
+      "case_type": "DRUNK_DRIVING",
+      "needs_settlement": false,
+      "confidence": 0.95
+    }
+  },
+  {
+    "input": "음주운전으로 사고까지 냈을 때 처벌이?",
+    "expected": {
+      "case_type": "DRUNK_DRIVING",
+      "needs_settlement": false,
+      "confidence": 0.85
+    }
+  },
+  {
+    "input": "어린이보호구역에서 아이를 친 경우",
+    "expected": {
+      "case_type": "PEDESTRIAN_ACCIDENT",
+      "needs_settlement": true,
+      "confidence": 0.9
+    }
+  },
+  {
+    "input": "횡단보도에서 보행자 사고 운전자 책임",
+    "expected": {
+      "case_type": "PEDESTRIAN_ACCIDENT",
+      "needs_settlement": false,
+      "confidence": 0.9
+    }
+  },
+  {
+    "input": "앞차에 위협운전을 했어요. 난폭운전인가요?",
+    "expected": {
+      "case_type": "RECKLESS_DRIVING",
+      "needs_settlement": false,
+      "confidence": 0.9
+    }
+  },
+  {
+    "input": "오늘 점심 뭐 먹지?",
+    "expected": {
+      "case_type": "OUT_OF_SCOPE",
+      "needs_settlement": false,
+      "confidence": 0.99
+    }
+  },
+  {
+    "input": "음주운전 사고 내고 도망갔어요",
+    "expected": {
+      "case_type": "HIT_AND_RUN",
+      "needs_settlement": false,
+      "confidence": 0.7
+    }
+  },
+  {
+    "input": "차 사고 났어요",
+    "expected": {
+      "case_type": "RECKLESS_DRIVING",
+      "needs_settlement": false,
+      "confidence": 0.3
+    }
+  }
+]

@@ -1,0 +1,17 @@
+[사건 분류]
+유형: {case_type_korean}
+
+[검색된 법령·판례]
+{retrieved_docs_block}
+
+[대응 가이드]
+{guide_block}
+
+[합의금 추정]
+{settlement_block}
+
+[이전 대화]
+{history_block}
+
+[현재 질문]
+{user_query}
