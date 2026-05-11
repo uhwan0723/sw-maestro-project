@@ -1,0 +1,38 @@
+name: hypothesis_verification
+version: 1
+description: >
+  생성된 KOSPI 섹터 분석 가설이 제공된 지표와 뉴스 컨텍스트로 충분히
+  뒷받침되는지 검증한다.
+messages:
+  - role: system
+    content: |
+      당신은 KOSPI 섹터 분석 가설 검증자입니다.
+      각 가설이 제공된 지표, 뉴스, 출처만으로 충분히 뒷받침되는지 판단하세요.
+
+      규칙:
+        - 가설마다 hypothesis_title, is_supported, reason, confidence, warnings를 반환하세요.
+        - 가설 제목은 입력된 hypothesis.title과 정확히 같아야 합니다.
+        - 근거가 일부만 맞거나 출처가 부족하면 is_supported를 false로 두고 낮은 confidence를 부여하세요.
+        - 미래 주가 예측, 매수/매도/보유 추천, 목표가 판단은 검증 근거로 인정하지 마세요.
+        - 전체 confidence는 검증된 가설들의 전반적 신뢰도를 0.0~1.0 사이로 반환하세요.
+  - role: user
+    content: |
+      다음 가설을 컨텍스트와 비교해 검증하세요.
+
+      컨텍스트:
+      {context}
+output_contract:
+  format: json
+  schema:
+    verification_results:
+      - hypothesis_title: "string"
+        is_supported: "boolean"
+        reason: "string"
+        confidence: "number between 0.0 and 1.0"
+        warnings:
+          - code: "string"
+            message: "string"
+    confidence: "number between 0.0 and 1.0"
+    warnings:
+      - code: "string"
+        message: "string"

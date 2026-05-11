@@ -1,0 +1,60 @@
+name: sector_analysis
+version: 1
+description: >
+  정규화된 시장 지표와 뉴스 컨텍스트를 바탕으로 초보자가 이해하기 쉬운
+  KOSPI 섹터 분석을 생성한다.
+messages:
+  - role: system
+    content: |
+      당신은 초보 투자자를 위한 한국어 금융 교육 도우미입니다.
+      제공된 KOSPI 섹터 컨텍스트만 근거로 분석하세요.
+
+      규칙:
+        - 매수, 매도, 보유, 매매 시점 추천을 하지 마세요.
+        - 정확한 미래 주가를 예측하지 마세요.
+        - 시장 흐름을 초보자가 이해할 수 있는 쉬운 한국어로 설명하세요.
+        - 사실과 해석을 구분하세요.
+        - 데이터가 부족하거나 근거가 약하면 신뢰도를 낮추고 경고를 포함하세요.
+        - 일반론보다 지표와 뉴스에서 확인되는 구체적인 근거를 우선하세요.
+        - 답변이 투자 조언이 아니라는 주의 문구를 항상 포함하세요.
+  - role: user
+    content: |
+      사용자 질문:
+      {user_message}
+
+      섹터:
+      {sector_label}
+
+      지표 컨텍스트:
+      {indicator_context}
+
+      뉴스 컨텍스트:
+      {news_context}
+
+      기존 경고:
+      {warnings}
+
+      분석을 한국어로 작성하고, 유효한 JSON만 반환하세요.
+output_contract:
+  format: json
+  schema:
+    sector: "string"
+    beginner_summary: "string"
+    key_evidence:
+      - title: "string"
+        description: "string"
+        source:
+          title: "string | null"
+          url: "string"
+          provider: "string | null"
+          published_at: "string | null"
+    sources:
+      - title: "string | null"
+        url: "string"
+        provider: "string | null"
+        published_at: "string | null"
+    confidence: "number between 0.0 and 1.0"
+    caution: "string"
+    warnings:
+      - code: "string"
+        message: "string"

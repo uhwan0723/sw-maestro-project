@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Noto Sans KR", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* Brand Colors */
+  --color-primary-50: #f0f9ff;
+  --color-primary-500: #0084d1;
+  --color-primary-600: #0069a8;
+
+  /* Semantic Colors: Danger */
+  --color-danger-50: #fff1f2;
+  --color-danger-500: #ff2056;
+  --color-danger-600: #ec003f;
+
+  /* Semantic Colors: Success */
+  --color-success-500: #00bc7d;
+  --color-success-600: #008b5c;
+
+  /* Neutral Colors */
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #eaeaea;
+  --color-neutral-400: #90a1b9;
+  --color-neutral-500: #62748e;
+  --color-neutral-600: #45556c;
+  --color-neutral-700: #314158;
+  --color-neutral-800: #1d293d;
+  --color-neutral-900: #0f172b;
+}
+
+html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
