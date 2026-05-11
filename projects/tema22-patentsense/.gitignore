@@ -1,0 +1,50 @@
+# Environment / Secrets
+.env
+.env.local
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Logs / cache
+*.log
+.cache/
+data/cache/
+
+# Build / dist
+build/
+dist/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+desktop.ini
+CLAUDE.md
+test.txt
