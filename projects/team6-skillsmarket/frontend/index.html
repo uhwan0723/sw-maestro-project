@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skills Market — AI 자동화 스킬 마켓</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles/main.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- 백엔드 미기동/네트워크 실패 알림 배너 -->
+<div id="net-banner" class="net-banner" hidden>
+  <span class="net-banner-text"></span>
+  <button type="button" class="net-banner-close" aria-label="닫기">×</button>
+</div>
+
+<div class="wrap">
+
+  <nav>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <span>skills.market</span>
+    </div>
+    <div class="nav-links">
+      <a href="#discover">Discover</a>
+      <a href="#intent">Ask AI</a>
+      <a href="#create-skill">Create</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="badge"><span class="pulse"></span><span>v0.1 · public beta</span></div>
+    <h1>개발자를 위한<br/>AI 자동화 <em>스킬 마켓.</em></h1>
+    <p class="hero-sub">
+      반복 작업을 대신할 Claude Skill을 발견하고, 자연어로 의도를 적으면 RAG가 가장 가까운 스킬을 추천합니다.
+      검색이 아니라, 행동을 대신 수행하는 마켓플레이스.
+    </p>
+    <div class="hero-cta">
+      <a href="#discover" class="btn btn-primary"><span>스킬 둘러보기</span><span class="arrow">→</span></a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-label">in view</div></div>
+      <div class="stat"><div class="stat-num" id="stat-stacks">—</div><div class="stat-label">tech stacks</div></div>
+      <div class="stat"><div class="stat-num">RAG</div><div class="stat-label">match engine</div></div>
+      <div class="stat"><div class="stat-num" id="stat-accuracy">—</div><div class="stat-label">last match</div></div>
+    </div>
+  </header>
+
+  <section id="discover">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">01 / Discover</div>
+        <h2 class="sec-title">테크 카테고리별, 정확한 스킬 추천.</h2>
+      </div>
+      <p class="sec-desc">사용 중인 스택을 고르면 그에 맞는 스킬만 골라 보여줍니다. Spring Boot 로깅부터 React 접근성 점검까지.</p>
+    </div>
+
+    <div class="chips" role="tablist" id="category-chips">
+      <button class="chip active" data-cat="SPRING_BOOT" role="tab" aria-selected="true">Spring Boot</button>
+      <button class="chip" data-cat="REACT" role="tab" aria-selected="false">Frontend / React</button>
+      <button class="chip" data-cat="DEVOPS" role="tab" aria-selected="false">DevOps</button>
+      <button class="chip" data-cat="DATA" role="tab" aria-selected="false">Data</button>
+      <button class="chip" data-cat="ETC" role="tab" aria-selected="false">ETC</button>
+    </div>
+
+    <div class="grid" id="skill-grid"></div>
+    <div class="empty-state" id="skill-grid-empty" hidden></div>
+  </section>
+
+  <section id="intent">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">02 / Ask AI</div>
+        <h2 class="sec-title">의도를 적으면, RAG가 매칭한다.</h2>
+      </div>
+      <p class="sec-desc">자연어로 자동화하고 싶은 흐름을 적으면 가장 가까운 스킬 셋을 추천합니다. 매칭 점수와 근거까지.</p>
+    </div>
+
+    <div class="intent-box">
+      <div class="intent-input-wrap">
+        <span class="intent-prompt">$</span>
+        <textarea id="intent-input" class="intent-input has-prompt" placeholder="자동화하고 싶은 작업을 자연어로 적어보세요..."></textarea>
+      </div>
+      <div class="intent-row">
+        <div class="intent-presets">
+          <button class="chip" data-intent="CI 실패 로그를 분석해 stacktrace만 뽑고 슬랙으로 요약 알림 보내기">CI failure → Slack</button>
+          <button class="chip" data-intent="PR diff에서 보안 이슈와 컨벤션 위반을 자동으로 코멘트">PR auto-review</button>
+          <button class="chip" data-intent="Spring Boot 앱에 구조화 로깅과 trace ID 자동 적용">Spring tracing</button>
+        </div>
+        <button id="intent-go" class="btn btn-primary"><span>match skills</span><span class="arrow">→</span></button>
+      </div>
+      <div id="intent-results" class="intent-results"></div>
+    </div>
+  </section>
+
+  <section id="create-skill">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">03 / Create Skill</div>
+        <h2 class="sec-title">원하는 스킬을 AI가 만들어 드립니다.</h2>
+      </div>
+      <p class="sec-desc">자동화하고 싶은 작업을 자연어로 설명하면, AI가 Claude Skill을 생성합니다.</p>
+    </div>
+
+    <!-- 폼 영역 -->
+    <div id="create-skill-form-wrap">
+      <div class="intent-box">
+        <div class="intent-input-wrap">
+          <span class="intent-prompt">$</span>
+          <textarea id="create-skill-input" class="intent-input has-prompt" placeholder="어떤 스킬을 만들고 싶은지 자유롭게 설명해 주세요..."></textarea>
+        </div>
+        <div class="create-skill-validation-msg" id="create-skill-validation" hidden></div>
+        <div class="intent-row">
+          <div></div>
+          <button id="create-skill-go" class="btn btn-primary">
+            <span id="create-skill-spinner" class="create-skill-spinner" hidden></span>
+            <span>generate skill</span>
+            <span class="arrow">&rarr;</span>
+          </button>
+        </div>
+        <div class="create-skill-error-msg" id="create-skill-error" hidden></div>
+        <div class="create-skill-success-msg" id="create-skill-success" hidden></div>
+      </div>
+    </div>
+
+    <!-- 진행 상태 영역 -->
+    <div id="skill-progress-wrap" hidden>
+      <div class="intent-box">
+        <div class="progress-header">
+          <h3 class="progress-title">스킬 생성 진행 상태</h3>
+          <p class="progress-subtitle" id="progress-status-text">처리 중...</p>
+        </div>
+
+        <div class="progress-steps">
+          <div class="progress-step pending" id="progress-step-PENDING">
+            <div class="progress-step-indicator">1</div>
+            <div class="progress-step-label">요청 대기</div>
+          </div>
+          <div class="progress-step-line"></div>
+          <div class="progress-step pending" id="progress-step-CLARIFYING">
+            <div class="progress-step-indicator">2</div>
+            <div class="progress-step-label">요구사항 분석</div>
+          </div>
+          <div class="progress-step-line"></div>
+          <div class="progress-step pending" id="progress-step-GENERATING">
+            <div class="progress-step-indicator">3</div>
+            <div class="progress-step-label">스킬 생성</div>
+          </div>
+          <div class="progress-step-line"></div>
+          <div class="progress-step pending" id="progress-step-REVIEWING">
+            <div class="progress-step-indicator">4</div>
+            <div class="progress-step-label">품질 리뷰</div>
+          </div>
+          <div class="progress-step-line"></div>
+          <div class="progress-step pending" id="progress-step-REFINING">
+            <div class="progress-step-indicator">5</div>
+            <div class="progress-step-label">최종 수정</div>
+          </div>
+          <div class="progress-step-line"></div>
+          <div class="progress-step pending" id="progress-step-COMPLETED">
+            <div class="progress-step-indicator">6</div>
+            <div class="progress-step-label">완료</div>
+          </div>
+        </div>
+
+        <!-- 에러 상태 -->
+        <div id="progress-error" class="progress-error-box" hidden>
+          <p>스킬 생성 중 오류가 발생했습니다. 다시 시도해 주세요.</p>
+          <button id="progress-retry-btn" class="btn btn-primary" style="margin-top:12px">
+            <span>다시 시도</span><span class="arrow">&rarr;</span>
+          </button>
+        </div>
+
+        <!-- 완료 결과 -->
+        <div id="progress-result" hidden></div>
+
+        <!-- 새 스킬 만들기 -->
+        <div class="progress-actions">
+          <button id="progress-new-btn" class="btn"><span>새 스킬 만들기</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="logo" style="margin-bottom:14px">
+          <div class="logo-dot"></div>
+          <span>skills.market</span>
+        </div>
+        <p style="max-width:32ch;line-height:1.6;color:var(--fg-3)">
+          개발자의 모든 반복 작업을 자동화하는 AI 스킬 마켓.<br/>
+          Built on Claude Skills.
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#discover">Discover</a>
+        <a href="#intent">Ask AI</a>
+        <a href="#create-skill">Create</a>
+      </div>
+      <div class="foot-col">
+        <h4>Build</h4>
+        <a href="#">CLI</a>
+        <a href="#">SKILL.md spec</a>
+        <a href="#">Publish guide</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Changelog</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 skills.market — all systems operational</span>
+      <span><span style="color:var(--ok)">●</span> sync 14ms</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Skill Detail Modal -->
+<div id="skill-modal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-backdrop" data-close></div>
+  <article class="modal-panel">
+    <button type="button" class="modal-close" data-close aria-label="닫기">×</button>
+    <div id="modal-content"></div>
+  </article>
+</div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
