@@ -1,0 +1,5 @@
+# 활성 프롬프트 버전. 변경 시 같은 PR에 회귀 골든셋 결과 첨부 (08-spec §7).
+active:
+  intent: v1
+  meta: v1
+  recommend: v1

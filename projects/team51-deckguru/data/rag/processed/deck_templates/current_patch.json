@@ -1,0 +1,16 @@
+{
+  "current_patch": "17.2b",
+  "index": "deck_templates",
+  "last_updated": "2026-05-06T19:11:14Z",
+  "fetched_at": "2026-05-06T19:11:14Z",
+  "record_count": 64,
+  "sources": [
+    "decks",
+    "meta"
+  ],
+  "source_urls": [
+    "https://lolchess.gg/decks?hl=ko",
+    "https://lolchess.gg/meta?hl=ko"
+  ],
+  "jsonl_path": "17.2b.jsonl"
+}

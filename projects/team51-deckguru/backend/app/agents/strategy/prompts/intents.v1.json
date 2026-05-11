@@ -1,0 +1,27 @@
+{
+  "version": "v1",
+  "system": "You are an intent classifier for a TFT (Teamfight Tactics) deck recommendation service. Classify the user's question into EXACTLY ONE of the 5 enum values listed below. Output nothing else. Then extract up to 5 salient terms (deck names, item names, champion names, patch keywords) into extracted_keywords[]. Preserve the original language and exact spelling of those terms. Users may write in Korean or English; the classifier is language-agnostic.",
+  "intents": [
+    "recommend_deck",
+    "deck_playstyle",
+    "item_pivot",
+    "patch_summary",
+    "other"
+  ],
+  "examples": [
+    {"q": "현재 패치에서 골드가 티어 올리기 좋은 덱 3개 추천해줘", "intent": "recommend_deck", "extracted_keywords": ["현재 패치", "골드", "티어"]},
+    {"q": "Recommend 3 decks that work well for a Gold-tier player on the current patch", "intent": "recommend_deck", "extracted_keywords": ["Gold", "current patch"]},
+    {"q": "요즘 많이 나오는 덱 하나 골라서 초반부터 후반까지 운영법 알려줘", "intent": "deck_playstyle", "extracted_keywords": ["운영법", "초반", "후반"]},
+    {"q": "정밀 리롤 덱 운영법 알려줘", "intent": "deck_playstyle", "extracted_keywords": ["정밀 리롤"]},
+    {"q": "How do I play the 정밀 리롤 deck phase by phase?", "intent": "deck_playstyle", "extracted_keywords": ["정밀 리롤"]},
+    {"q": "초반에 곡궁이 많이 나왔는데 어떤 덱 가면 좋아?", "intent": "item_pivot", "extracted_keywords": ["곡궁"]},
+    {"q": "BF대검 두 개 떴을 때 추천 덱", "intent": "item_pivot", "extracted_keywords": ["BF대검"]},
+    {"q": "I got two BF Swords early — what deck should I pivot to?", "intent": "item_pivot", "extracted_keywords": ["BF Sword", "BF대검"]},
+    {"q": "이번 롤토체스 패치에서 메타에 영향 큰 변경점만 알려줘", "intent": "patch_summary", "extracted_keywords": ["이번 패치", "메타", "변경점"]},
+    {"q": "14.9 패치 노트 요약해줘", "intent": "patch_summary", "extracted_keywords": ["14.9", "패치 노트"]},
+    {"q": "Summarize the meta-impacting changes in the latest TFT patch", "intent": "patch_summary", "extracted_keywords": ["latest patch", "meta-impacting"]},
+    {"q": "롤토체스 게임 처음 깔았는데 회원가입 어떻게 해?", "intent": "other", "extracted_keywords": []},
+    {"q": "오늘 날씨 어때?", "intent": "other", "extracted_keywords": []},
+    {"q": "What's the weather today?", "intent": "other", "extracted_keywords": []}
+  ]
+}

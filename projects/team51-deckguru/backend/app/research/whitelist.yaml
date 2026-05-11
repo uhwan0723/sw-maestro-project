@@ -1,0 +1,22 @@
+# Live Research가 접근할 수 있는 외부 도메인 목록.
+# 여기에 없는 도메인은 검색 결과에 나오더라도 fetch하지 않는다.
+allowed_domains:
+  # Riot/TFT 공식 패치 노트 계열
+  - teamfighttactics.leagueoflegends.com
+  - leagueoflegends.com
+  # TFT 메타/통계 사이트
+  - lolchess.gg
+  - tactics.tools
+  - metatft.com
+  # 한국 커뮤니티 출처
+  - inven.co.kr
+
+# 비어 있으면 모든 YouTube 채널 허용.
+# 운영에서 제한하려면 채널 ID를 여기에 추가한다.
+allowed_youtube_channels: []
+
+# 로그인/관리/API endpoint처럼 본문 근거로 쓰기 어렵거나 정책상 위험한 URL 조각.
+forbidden_keywords_in_url:
+  - "/login"
+  - "/api/"
+  - "/admin"

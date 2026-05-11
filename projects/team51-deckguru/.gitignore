@@ -1,0 +1,84 @@
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# --- Environment / secrets ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# Test / lint / typing cache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+.turbo/
+.npm/
+.pnpm-store/
+*.tsbuildinfo
+.next-env.d.ts
+
+# --- Data (RAG / backend data) ---
+backend/data/chroma/
+backend/data/raw/
+backend/data/processed/
+data/rag/vectorstore/chroma/
+
+# --- Logs / temporary outputs ---
+*.log
+logs/
+.tmp/
+.cache/
+.langgraph_cache/
+
+# --- SQLite runtime DB ---
+*.db
+*.db-shm
+*.db-wal
+
+# --- IDE ---
+.vscode/
+!.vscode/settings.example.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# --- LangSmith / LLM tracing ---
+.langsmith/
+
+# --- Build outputs ---
+*.tar.gz
+*.zip
+
+# --- Lazyweb 산출물 ---
+.lazyweb
+
+# --- Model ---
+models/

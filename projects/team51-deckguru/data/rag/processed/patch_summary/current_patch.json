@@ -1,0 +1,14 @@
+{
+  "current_patch": "17.2",
+  "index": "patch_summary",
+  "last_updated": "2026-05-06T17:25:14Z",
+  "fetched_at": "2026-05-06T17:25:14Z",
+  "record_count": 199,
+  "sources": [
+    "riot"
+  ],
+  "source_urls": [
+    "https://teamfighttactics.leagueoflegends.com/ko-kr/news/game-updates/teamfight-tactics-patch-17-2/"
+  ],
+  "jsonl_path": "17.2.jsonl"
+}

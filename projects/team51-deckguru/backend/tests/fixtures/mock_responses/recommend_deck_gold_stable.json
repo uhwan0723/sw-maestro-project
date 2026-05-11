@@ -1,0 +1,84 @@
+{
+  "request_id": "mock-00000000-0000-0000-0000-000000000001",
+  "patch_version": "14.9",
+  "intent": "recommend_deck",
+  "meta_summary": "17.2 패치 기준 골드 티어에서 안정적인 Top4를 노리기 좋은 덱 3개를 소개합니다. 현재 메타는 빠른 레벨업보다 재롤 전략이 강세이며, 3코스트 유닛 중심의 덱이 높은 Top4율을 보이고 있습니다.",
+  "decks": [
+    {
+      "name": "마스터 이 킨드레드",
+      "difficulty": "medium",
+      "core_units": ["마스터 이", "킨드레드", "탐 켄치", "문도 박사", "나르", "레넥톤", "볼리베어"],
+      "key_items": ["밤의 끝자락", "거인 학살자", "무한의 대검"],
+      "augment_direction": "사냥꾼 상징 또는 N.O.V.A. 증강 우선",
+      "playbook": [
+        {"phase": "early", "instruction": "3~4 레벨에서 저코스트 유닛으로 체력 유지. 마스터 이 아이템 조각 챙기기."},
+        {"phase": "mid", "instruction": "6레벨에서 마스터 이 + 킨드레드 + 사냥꾼 2 완성. 재롤 전략으로 3성 마스터 이 목표."},
+        {"phase": "late", "instruction": "8레벨 이후 탐 켄치·볼리베어 추가해 야생 또는 수호자 시너지 강화."}
+      ],
+      "good_conditions": ["벤치에 마스터 이가 일찍 등장할 때", "밤의 끝자락 조합 재료 확보 시"],
+      "avoid_conditions": ["마스터 이를 2명 이상이 경쟁할 때"],
+      "fallback_plan": "마스터 이 확보 실패 시 벨베스 중심의 사냥꾼 덱으로 피벗.",
+      "rationale": "lolchess 데이터 기준 Top4율 60.09%, 평균 등수 3.8로 골드~에메랄드 구간에서 가성비 최상위 덱."
+    },
+    {
+      "name": "브루저 저격수",
+      "difficulty": "easy",
+      "core_units": ["드레이븐", "케이틀린", "레넥톤", "문도 박사", "볼리베어", "나르"],
+      "key_items": ["루난의 허리케인", "거인 학살자", "용사의 장갑"],
+      "augment_direction": "브루저 또는 저격수 증강 1개 이상 확보",
+      "playbook": [
+        {"phase": "early", "instruction": "저코스트 브루저로 전선 구성. 드레이븐 아이템 우선 장착."},
+        {"phase": "mid", "instruction": "6레벨에서 저격수 2 + 브루저 4 목표. 케이틀린·드레이븐 동시 운용."},
+        {"phase": "late", "instruction": "8~9레벨에서 5티어 저격수 유닛 추가해 딜 극대화."}
+      ],
+      "good_conditions": ["루난의 허리케인 완성 시", "저격수 증강 픽 성공 시"],
+      "avoid_conditions": ["드레이븐·케이틀린 모두 픽 경쟁 심할 때"],
+      "fallback_plan": "저격수 확보 실패 시 브루저 중심으로 탱킹에 집중.",
+      "rationale": "초보자도 쉽게 운영 가능하며 Top4율 55% 수준. 아이템 유연성이 높아 안전한 선택."
+    },
+    {
+      "name": "빠른 판올리기 재롤",
+      "difficulty": "hard",
+      "core_units": ["야스오", "피오라", "가렌", "룰루", "포포피", "카르마"],
+      "key_items": ["무한의 대검", "청야의 검", "최후의 속삭임"],
+      "augment_direction": "빠른 판올리기 또는 결투사 관련 증강",
+      "playbook": [
+        {"phase": "early", "instruction": "레벨 올리지 않고 골드 최대 모으기. 체력 소비 최소화."},
+        {"phase": "mid", "instruction": "5레벨 고정 후 야스오·피오라 3성 목표 재롤. 결투사 4 완성."},
+        {"phase": "late", "instruction": "재롤 완료 후 7~8레벨 올려 상위 유닛 1~2명 추가."}
+      ],
+      "good_conditions": ["결투사 증강 픽 시", "초반 야스오 다수 확보 시"],
+      "avoid_conditions": ["초반 체력이 30 이하로 떨어졌을 때", "야스오 경쟁자가 2명 이상일 때"],
+      "fallback_plan": "재롤 실패 시 8레벨로 빠르게 올려 고코스트 덱으로 전환.",
+      "rationale": "성공 시 1~2등을 노릴 수 있는 고위험 고보상 전략. 골드 관리 숙련도가 핵심."
+    }
+  ],
+  "sources": [
+    {
+      "title": "Lolchess 메타 덱 랭킹",
+      "url": "https://lolchess.gg/decks?hl=ko",
+      "published_at": null,
+      "snippet": "마스터 이 킨드레드 Top4율 60.09%, 평균 등수 3.8 (17.2 패치 기준)",
+      "source_kind": "meta_site"
+    },
+    {
+      "title": "Riot 공식 패치 17.2 노트",
+      "url": "https://www.leagueoflegends.com/ko-kr/news/game-updates/tft-patch-17-2-notes/",
+      "published_at": "2025-01-22T00:00:00Z",
+      "snippet": "마스터 이, 킨드레드 밸런스 조정 없음. 브루저 계열 방어력 소폭 상향.",
+      "source_kind": "patch_note_official"
+    }
+  ],
+  "confidence": "medium",
+  "warnings": [],
+  "generated_at": "2025-05-07T00:00:00Z",
+  "debug": {
+    "react_steps": 0,
+    "rag_avg_score": 0.72,
+    "tier2_triggered": false,
+    "node_latencies_ms": {
+      "analyze_intent": 0,
+      "mock_response": 1
+    }
+  }
+}
