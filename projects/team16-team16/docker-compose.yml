@@ -1,0 +1,30 @@
+# 로컬 통합 실행. `docker compose up --build`로 백엔드 + (FE 준비되면) 프론트엔드 동시 실행.
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: morning-briefing-backend
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./backend/.env
+    environment:
+      - APP_PORT=8001
+      - ALLOWED_ORIGINS=http://localhost:8002,http://localhost:8501
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/api/v1/health').read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: morning-briefing-frontend
+    ports:
+      - "8002:8002"
+    environment:
+      - BACKEND_URL=http://backend:8001
+    depends_on:
+      backend:
+        condition: service_healthy
