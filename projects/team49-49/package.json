@@ -1,0 +1,32 @@
+{
+  "name": "ideation-context-hub-monorepo",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "setup": "python -m pip install -r requirements.txt && npm install --prefix frontend && python scripts/langgraph_install.py",
+    "setup:python": "python -m pip install -r requirements.txt",
+    "setup:frontend": "npm install --prefix frontend",
+    "setup:langgraph": "python scripts/langgraph_install.py",
+    "dev": "python scripts/dev_all.py",
+    "dev:stop": "python scripts/stop_dev.py --include-pytest --include-playwright-mcp",
+    "start": "npm run dev",
+    "dev:web": "python scripts/dev_all.py --no-langgraph",
+    "dev:langgraph": "python scripts/langgraph_dev.py --all",
+    "dev:langgraph:all": "python scripts/langgraph_dev.py --all",
+    "app:dev": "python scripts/dev_all.py",
+    "backend:dev": "python -m uvicorn app.main:create_app --factory --reload --host 127.0.0.1 --port 8000",
+    "backend:test": "python -m pytest",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:dev": "npm --prefix frontend run dev -- --host 127.0.0.1 --port 5173",
+    "frontend:lint": "npm --prefix frontend run lint",
+    "langgraph:install": "python scripts/langgraph_install.py",
+    "langgraph:list": "python scripts/langgraph_dev.py --list",
+    "langgraph:dev": "python scripts/langgraph_dev.py --all",
+    "langgraph:dev:qa": "python scripts/langgraph_dev.py qa_assistant",
+    "langgraph:dev:all": "python scripts/langgraph_dev.py --all",
+    "test": "python scripts/stop_dev.py --include-pytest --include-playwright-mcp && python -m pytest",
+    "build": "npm --prefix frontend run build"
+  }
+}

@@ -1,0 +1,434 @@
+@import "@fontsource-variable/geist";
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.72rem;
+  --background: oklch(0.985 0.002 247.839);
+  --foreground: oklch(0.145 0.018 264.376);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0.018 264.376);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0.018 264.376);
+  --primary: oklch(0.52 0.18 262.1);
+  --primary-foreground: oklch(0.985 0.002 247.839);
+  --secondary: oklch(0.961 0.008 247.896);
+  --secondary-foreground: oklch(0.21 0.034 264.665);
+  --muted: oklch(0.961 0.008 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.955 0.028 262.1);
+  --accent-foreground: oklch(0.21 0.034 264.665);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.013 255.508);
+  --input: oklch(0.92 0.013 255.508);
+  --ring: oklch(0.52 0.18 262.1);
+  --sidebar: oklch(0.97 0.004 247.858);
+  --sidebar-foreground: oklch(0.145 0.018 264.376);
+  --sidebar-primary: oklch(0.52 0.18 262.1);
+  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-accent: oklch(0.945 0.01 247.896);
+  --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
+  --sidebar-border: oklch(0.90 0.014 255.508);
+  --sidebar-ring: oklch(0.52 0.18 262.1);
+}
+
+.dark {
+  --background: oklch(0.13 0.022 264.376);
+  --foreground: oklch(0.985 0.002 247.839);
+  --card: oklch(0.18 0.025 264.376);
+  --card-foreground: oklch(0.985 0.002 247.839);
+  --popover: oklch(0.18 0.025 264.376);
+  --popover-foreground: oklch(0.985 0.002 247.839);
+  --primary: oklch(0.72 0.16 263.5);
+  --primary-foreground: oklch(0.145 0.018 264.376);
+  --secondary: oklch(0.25 0.025 264.376);
+  --secondary-foreground: oklch(0.985 0.002 247.839);
+  --muted: oklch(0.25 0.025 264.376);
+  --muted-foreground: oklch(0.72 0.032 257.417);
+  --accent: oklch(0.26 0.035 264.376);
+  --accent-foreground: oklch(0.985 0.002 247.839);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.72 0.16 263.5);
+  --sidebar: oklch(0.16 0.02 264.376);
+  --sidebar-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-primary: oklch(0.72 0.16 263.5);
+  --sidebar-primary-foreground: oklch(0.145 0.018 264.376);
+  --sidebar-accent: oklch(0.23 0.026 264.376);
+  --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.72 0.16 263.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    letter-spacing: 0;
+  }
+
+  pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+}
+
+@layer components {
+  .workflow-node {
+    @apply flex min-h-24 flex-col justify-between gap-3 p-3 sm:min-h-28;
+  }
+
+  .workflow-node svg {
+    @apply text-muted-foreground;
+  }
+
+  .workflow-strip {
+    @apply grid grid-cols-2 gap-3 md:grid-cols-5;
+  }
+
+  .workflow-step-card {
+    @apply min-w-0 transition hover:ring-2 hover:ring-ring/20;
+  }
+
+  .flow-rail {
+    @apply grid gap-3 xl:grid-cols-5;
+  }
+
+  .flow-rail-node {
+    @apply flex min-w-0 items-stretch gap-3;
+  }
+
+  .flow-rail-card {
+    @apply flex min-h-40 min-w-0 flex-1 flex-col justify-between rounded-xl border bg-muted/25 p-3 transition;
+  }
+
+  .flow-rail-card.is-wired {
+    @apply border-primary/35 bg-primary/5;
+  }
+
+  .flow-rail-card svg {
+    @apply text-muted-foreground;
+  }
+
+  .flow-rail-card.is-wired svg {
+    @apply text-primary;
+  }
+
+  .flow-rail-arrow {
+    @apply hidden items-center text-muted-foreground xl:flex;
+  }
+
+  .flow-card {
+    @apply transition hover:ring-2 hover:ring-ring/20;
+  }
+
+  .flow-card.is-wired {
+    @apply border-primary/30;
+  }
+
+  .flow-link-row {
+    @apply flex min-w-0 flex-col gap-2 rounded-xl border bg-background p-3;
+  }
+
+  .sample-source-row {
+    @apply flex flex-col gap-1 rounded-lg border bg-background p-3 text-left transition hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .studio-graph-toolbar {
+    @apply flex flex-wrap items-center gap-2 border-b bg-muted/25 px-4 py-3;
+  }
+
+  .graph-studio-legend {
+    @apply ml-auto flex flex-wrap items-center gap-3 text-xs text-muted-foreground;
+  }
+
+  .graph-legend-item {
+    @apply inline-flex items-center gap-1.5 whitespace-nowrap;
+  }
+
+  .graph-legend-dot {
+    @apply inline-block h-2.5 w-2.5 rounded-full border;
+  }
+
+  .graph-legend-dot.is-source {
+    background: color-mix(in oklch, var(--primary), var(--card) 35%);
+    border-color: color-mix(in oklch, var(--primary), transparent 12%);
+  }
+
+  .graph-legend-dot.is-card {
+    background: color-mix(in oklch, var(--foreground), var(--card) 88%);
+    border-color: var(--border);
+  }
+
+  .graph-legend-line {
+    @apply inline-block h-0.5 w-5 rounded-full;
+    background: color-mix(in oklch, var(--muted-foreground), transparent 35%);
+  }
+
+  .studio-graph-canvas {
+    @apply block h-[620px] w-full touch-none bg-background;
+    background-image:
+      linear-gradient(to right, color-mix(in oklch, var(--border), transparent 45%) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklch, var(--border), transparent 45%) 1px, transparent 1px);
+    background-size: 34px 34px;
+    cursor: grab;
+  }
+
+  .studio-graph-canvas.is-panning {
+    cursor: grabbing;
+  }
+
+  .graph-lane-labels text {
+    fill: var(--muted-foreground);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .graph-edge path {
+    fill: none;
+    stroke: color-mix(in oklch, var(--muted-foreground), transparent 38%);
+    stroke-width: 1.5;
+  }
+
+  .graph-edge text {
+    fill: var(--muted-foreground);
+    font-size: 11px;
+    font-weight: 500;
+    paint-order: stroke;
+    pointer-events: none;
+    stroke: var(--background);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+    text-anchor: middle;
+  }
+
+  .graph-edge.is-contains path {
+    stroke: color-mix(in oklch, var(--primary), var(--muted-foreground) 26%);
+  }
+
+  .graph-edge.is-supports path,
+  .graph-edge.is-derived_from path {
+    stroke: rgb(20 184 166 / 0.72);
+  }
+
+  .graph-edge.is-contradicts path,
+  .graph-edge.is-blocks path {
+    stroke: rgb(244 63 94 / 0.72);
+  }
+
+  .graph-edge.is-active path {
+    stroke: var(--primary);
+    stroke-width: 2.4;
+  }
+
+  .graph-edge.is-dimmed {
+    opacity: 0.24;
+  }
+
+  .graph-node-box {
+    cursor: grab;
+    transition: opacity 140ms ease, filter 140ms ease;
+  }
+
+  .graph-node-box:active {
+    cursor: grabbing;
+  }
+
+  .graph-node-box > rect:first-of-type {
+    fill: var(--card);
+    stroke: color-mix(in oklch, var(--border), var(--foreground) 8%);
+    stroke-width: 1;
+    filter: drop-shadow(0 10px 24px rgb(15 23 42 / 0.08));
+  }
+
+  .graph-node-box.is-document > rect:first-of-type {
+    fill: color-mix(in oklch, var(--primary), var(--card) 88%);
+  }
+
+  .graph-node-box.is-selected > rect:first-of-type {
+    stroke: var(--primary);
+    stroke-width: 2.4;
+    filter: drop-shadow(0 12px 28px color-mix(in oklch, var(--primary), transparent 72%));
+  }
+
+  .graph-node-box.is-dimmed {
+    opacity: 0.34;
+  }
+
+  .graph-node-box.is-selected {
+    opacity: 1;
+  }
+
+  .graph-node-accent {
+    fill: color-mix(in oklch, var(--primary), transparent 8%);
+    stroke: none;
+    filter: none;
+    pointer-events: none;
+  }
+
+  .graph-node-box.is-card .graph-node-accent {
+    fill: rgb(20 184 166 / 0.88);
+  }
+
+  .graph-node-type {
+    fill: var(--muted-foreground);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .graph-node-title {
+    fill: var(--foreground);
+    font-size: 14px;
+    font-weight: 650;
+  }
+
+  .graph-node-meta {
+    fill: var(--muted-foreground);
+    font-size: 11px;
+  }
+
+  .obsidian-graph-stage {
+    @apply relative min-h-[640px];
+  }
+
+  .obsidian-graph-toolbar {
+    @apply absolute left-4 top-4 z-10 flex max-w-[calc(100%-2rem)] flex-wrap items-center gap-2 rounded-lg border bg-background/90 p-2 shadow-sm backdrop-blur;
+  }
+
+  .obsidian-graph-canvas {
+    @apply block h-[640px] w-full touch-none bg-[#18181b];
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 32px 32px;
+    cursor: grab;
+  }
+
+  .obsidian-graph-canvas:active {
+    cursor: grabbing;
+  }
+
+  .obsidian-graph-settings {
+    @apply flex flex-col gap-4 border-t bg-muted/20 p-4 lg:border-l lg:border-t-0;
+  }
+
+  .obsidian-link {
+    stroke: rgb(148 163 184 / 0.42);
+    stroke-width: 1.2;
+    transition: opacity 160ms ease, stroke 160ms ease, stroke-width 160ms ease;
+  }
+
+  .obsidian-link-group.is-active .obsidian-link {
+    stroke: rgb(45 212 191 / 0.96);
+    stroke-width: 2;
+  }
+
+  .obsidian-link-label {
+    fill: rgb(226 232 240 / 0.92);
+    font-size: 10px;
+    font-weight: 620;
+    paint-order: stroke;
+    pointer-events: none;
+    stroke: rgb(24 24 27 / 0.94);
+    stroke-linejoin: round;
+    stroke-width: 3px;
+    text-anchor: middle;
+  }
+
+  .obsidian-empty-state {
+    fill: rgb(226 232 240 / 0.72);
+    font-size: 13px;
+    font-weight: 640;
+    text-anchor: middle;
+  }
+
+  .obsidian-node {
+    cursor: grab;
+  }
+
+  .obsidian-node circle {
+    fill: rgb(45 212 191);
+    pointer-events: all;
+    stroke: rgb(255 255 255 / 0.5);
+    stroke-width: 1;
+    filter: drop-shadow(0 0 8px rgb(45 212 191 / 0.26));
+    transition: r 140ms ease, stroke 140ms ease, filter 140ms ease;
+  }
+
+  .obsidian-node.is-card circle {
+    fill: rgb(251 191 36);
+    filter: drop-shadow(0 0 8px rgb(251 191 36 / 0.24));
+  }
+
+  .obsidian-node.is-selected circle {
+    stroke: white;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 12px rgb(255 255 255 / 0.5));
+  }
+
+  .obsidian-node text {
+    fill: rgb(229 231 235);
+    font-size: 11px;
+    font-weight: 560;
+    paint-order: stroke;
+    pointer-events: none;
+    stroke: rgb(21 21 21 / 0.92);
+    stroke-linejoin: round;
+    stroke-width: 4px;
+  }
+}
