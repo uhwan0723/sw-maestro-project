@@ -1,0 +1,44 @@
+name: "🐛 Bug"
+description: "버그를 제보해주세요"
+title: "[Bug] "
+labels: ["🐛 fix"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "📄 버그 설명"
+      placeholder: "어떤 문제가 발생했는지 설명해주세요"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "🔁 재현 방법"
+      placeholder: |
+        1. ...로 이동
+        2. ...을 탭
+        3. 크래시 / 오작동 발생
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "✅ 기대 동작"
+      placeholder: "정상적으로 어떻게 동작해야 하나요?"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: "📱 플랫폼"
+      options:
+        - "Android"
+        - "iOS"
+        - "공통"
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: "🙋 참고 자료"
+      placeholder: "스크린샷, 로그, 관련 코드 등을 첨부해주세요 (선택사항)"

@@ -1,0 +1,42 @@
+name: "✨ Feature"
+description: "새로운 기능을 추가해주세요"
+title: "[Feature] "
+labels: ["✨ feat"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "📄 설명"
+      placeholder: "구현할 기능에 대해 설명해주세요. 어떤 화면/레이어에 해당하는지 포함해주세요"
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: "🏗️ 레이어"
+      description: "주로 작업하는 레이어를 선택해주세요"
+      options:
+        - "UI (composeApp)"
+        - "Presentation (ViewModel / MVI)"
+        - "Domain (UseCase / Model)"
+        - "Data (Repository / API / DTO)"
+        - "DI (Koin Module)"
+        - "Infrastructure (Gradle / 빌드 설정)"
+        - "기타"
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: "✅ 작업 목록"
+      placeholder: |
+        - [ ] 작업 1
+        - [ ] 작업 2
+        - [ ] 작업 3
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: "🙋 참고 자료"
+      placeholder: "관련 문서, PR, 설계 노트 등을 첨부해주세요 (선택사항)"

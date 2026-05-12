@@ -1,0 +1,23 @@
+- name: "🌱 init"
+  color: "C2E0C6"
+  description: "프로젝트 초기 설정"
+
+- name: "✨ feat"
+  color: "A2EEEF"
+  description: "새로운 기능 추가"
+
+- name: "♻️ refactor"
+  color: "FEF2C0"
+  description: "코드 리팩토링"
+
+- name: "📝 docs"
+  color: "0075CA"
+  description: "문서 추가 및 수정"
+
+- name: "🐛 fix"
+  color: "D73A4A"
+  description: "버그 수정"
+
+- name: "🔧 chore"
+  color: "E4E669"
+  description: "빌드 설정 및 기타 작업"
