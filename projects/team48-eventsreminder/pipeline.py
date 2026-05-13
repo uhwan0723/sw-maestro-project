@@ -1,7 +1,7 @@
 from calendar_sync import fetch_events
 from classifier import classify_event
 from reminder import generate_reminders
-from db import init_db, save_event, save_reminders
+from db import init_db, save_event, save_reminders, delete_ai_reminders
 
 
 def run_pipeline(ical_url: str):
@@ -21,6 +21,7 @@ def run_pipeline(ical_url: str):
         print(f"    → 리마인더 {len(reminders)}개 생성")
 
         save_event(event)
+        delete_ai_reminders(event["id"])
         save_reminders(reminders)
 
     print("파이프라인 완료.")

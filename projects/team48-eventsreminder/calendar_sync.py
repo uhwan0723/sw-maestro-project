@@ -52,7 +52,7 @@ def fetch_events(ical_url: str) -> list[dict]:
         start = component.get("dtstart")
         end = component.get("dtend")
 
-        if not uid or not summary or not start or not end:
+        if not uid or not summary or not start:
             continue
 
         if is_past(start):
@@ -63,7 +63,7 @@ def fetch_events(ical_url: str) -> list[dict]:
             "title": str(summary),
             "description": str(component.get("description", "")),
             "start_time": to_iso(start),
-            "end_time": to_iso(end),
+            "end_time": to_iso(end) if end else None,
         }
         events.append(event)
 

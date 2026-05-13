@@ -61,6 +61,16 @@ def save_event(event: dict):
     conn.close()
 
 
+def delete_ai_reminders(event_id: str):
+    conn = _connect()
+    conn.execute(
+        "DELETE FROM reminders WHERE event_id = ? AND created_by = 'ai'",
+        (event_id,)
+    )
+    conn.commit()
+    conn.close()
+
+
 def save_reminders(reminders: list[dict]):
     conn = _connect()
     for r in reminders:
@@ -98,7 +108,7 @@ def get_reminders_for_event(event_id: str) -> list[dict]:
 def update_reminder(reminder_id: int, remind_at: str):
     conn = _connect()
     conn.execute(
-        "UPDATE reminders SET remind_at = ?, created_by = 'user' WHERE id = ?",
+        "UPDATE reminders SET remind_at = ?, is_sent = 0, created_by = 'user' WHERE id = ?",
         (remind_at, reminder_id)
     )
     conn.commit()
@@ -126,8 +136,23 @@ def get_unsent_reminders() -> list[dict]:
     conn = _connect()
     now = datetime.now().isoformat()
     rows = conn.execute(
-        "SELECT r.*, e.title as event_title FROM reminders r JOIN events e ON r.event_id = e.id WHERE r.is_sent = 0 AND r.remind_at <= ? ORDER BY r.remind_at",
+        "SELECT r.*, e.title as event_title, e.category as event_category "
+        "FROM reminders r JOIN events e ON r.event_id = e.id "
+        "WHERE r.is_sent = 0 AND r.remind_at <= ? ORDER BY r.remind_at",
         (now,)
+    ).fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+
+def get_upcoming_reminders(limit: int = 10) -> list[dict]:
+    conn = _connect()
+    now = datetime.now().isoformat()
+    rows = conn.execute(
+        "SELECT r.id, r.remind_at, r.message, e.title as event_title, e.category as event_category "
+        "FROM reminders r JOIN events e ON r.event_id = e.id "
+        "WHERE r.is_sent = 0 AND r.remind_at > ? ORDER BY r.remind_at LIMIT ?",
+        (now, limit)
     ).fetchall()
     conn.close()
     return [dict(row) for row in rows]

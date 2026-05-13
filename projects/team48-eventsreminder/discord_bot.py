@@ -4,44 +4,42 @@ import argparse
 import asyncio
 import os
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import discord
+import discord.app_commands
+import discord.ui
+from dotenv import load_dotenv
 from gtts import gTTS
 
-from db import get_unsent_reminders, init_db, mark_as_sent
+from db import (
+    add_reminder,
+    get_unsent_reminders,
+    get_upcoming_reminders,
+    init_db,
+    mark_as_sent,
+    update_reminder,
+)
 
 
-ENV_PATH = Path(".env")
 TTS_DIR = Path("tts")
 CHECK_INTERVAL_SECONDS = 60
 TEST_MESSAGE = "Discord DM 테스트 메시지입니다."
+
+CATEGORY_COLORS = {
+    "면접": 0x5865F2,
+    "시험": 0xED4245,
+    "약속": 0x57F287,
+    "마감": 0xFEE75C,
+    "기타": 0x99AAB5,
+}
 
 
 @dataclass(frozen=True)
 class BotConfig:
     token: str
     user_id: int
-
-
-def load_dotenv(path: Path = ENV_PATH):
-    """간단한 KEY=VALUE 형식의 .env 파일을 환경변수로 로드"""
-    if not path.exists():
-        return
-
-    for raw_line in path.read_text(encoding="utf-8").splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-
-        key, value = line.split("=", 1)
-        key = key.strip()
-        value = value.strip().strip('"').strip("'")
-
-        if key.startswith("export "):
-            key = key.removeprefix("export ").strip()
-
-        os.environ.setdefault(key, value)
 
 
 def load_config() -> BotConfig:
@@ -62,13 +60,52 @@ def load_config() -> BotConfig:
     return BotConfig(token=token, user_id=parsed_user_id)
 
 
-def build_message(reminder: dict) -> str:
-    """Discord DM으로 보낼 리마인더 메시지 생성"""
-    return (
-        f"리마인더: {reminder['message']}\n"
-        f"일정: {reminder['event_title']}\n"
-        f"알림 시각: {reminder['remind_at']}"
-    )
+def _discord_ts(dt_str: str) -> str:
+    """ISO datetime → Discord 상대+절대 타임스탬프 문자열"""
+    ts = int(datetime.fromisoformat(dt_str[:19]).timestamp())
+    return f"<t:{ts}:F>  (<t:{ts}:R>)"
+
+
+def build_embed(reminder: dict, note: str = "") -> discord.Embed:
+    """리마인더를 Discord Embed 카드로 변환"""
+    category = reminder.get("event_category") or "기타"
+    color = CATEGORY_COLORS.get(category, 0x99AAB5)
+
+    description = reminder["message"]
+    if note:
+        description += f"\n\n{note}"
+
+    embed = discord.Embed(title="⏰ 리마인더", description=description, color=color)
+    embed.add_field(name="카테고리", value=category, inline=True)
+    embed.add_field(name="알림 시각", value=_discord_ts(reminder["remind_at"]), inline=True)
+    return embed
+
+
+class SnoozeView(discord.ui.View):
+    """리마인더 카드에 붙는 미루기/확인 버튼 (1시간 후 자동 만료)"""
+
+    def __init__(self, reminder: dict):
+        super().__init__(timeout=3600)
+        self.reminder = reminder
+
+    @discord.ui.button(label="30분 미루기", style=discord.ButtonStyle.secondary, emoji="⏰")
+    async def snooze_30(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self._snooze(interaction, 30)
+
+    @discord.ui.button(label="1시간 미루기", style=discord.ButtonStyle.secondary, emoji="⏰")
+    async def snooze_60(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self._snooze(interaction, 60)
+
+    @discord.ui.button(label="확인", style=discord.ButtonStyle.success, emoji="✅")
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = build_embed(self.reminder, note="✅ 확인했습니다.")
+        await interaction.response.edit_message(embed=embed, view=None)
+
+    async def _snooze(self, interaction: discord.Interaction, minutes: int):
+        new_time = (datetime.now() + timedelta(minutes=minutes)).isoformat()
+        add_reminder(self.reminder["event_id"], new_time, self.reminder["message"])
+        embed = build_embed(self.reminder, note=f"⏰ {minutes}분 뒤 다시 알려드릴게요.")
+        await interaction.response.edit_message(embed=embed, view=None)
 
 
 def text_to_speech(message: str, file_name: str) -> Path:
@@ -94,9 +131,69 @@ class ReminderBot(discord.Client):
         self.config = config
         self.test_mode = test_mode
         self.reminder_task: asyncio.Task | None = None
+        self.tree = discord.app_commands.CommandTree(self)
+        self._register_commands()
+
+    def _register_commands(self):
+        bot = self
+
+        async def reminder_id_autocomplete(
+            interaction: discord.Interaction,
+            current: str,
+        ) -> list[discord.app_commands.Choice[int]]:
+            reminders = get_upcoming_reminders(limit=25)
+            choices = []
+            for r in reminders:
+                title = r["event_title"]
+                if current and current.lower() not in title.lower() and current not in str(r["id"]):
+                    continue
+                label = f"#{r['id']} {title}"[:100]
+                choices.append(discord.app_commands.Choice(name=label, value=r["id"]))
+            return choices[:25]
+
+        @bot.tree.command(name="reminders", description="예정된 리마인더 목록을 확인합니다")
+        async def cmd_list(interaction: discord.Interaction):
+            if interaction.user.id != bot.config.user_id:
+                await interaction.response.send_message("권한이 없습니다.", ephemeral=True)
+                return
+            reminders = get_upcoming_reminders()
+            if not reminders:
+                await interaction.response.send_message("예정된 리마인더가 없습니다.", ephemeral=True)
+                return
+            embed = discord.Embed(title="📅 예정 리마인더", color=0x5865F2)
+            for r in reminders:
+                category = r.get("event_category") or "기타"
+                embed.add_field(
+                    name=f"`#{r['id']}` {r['event_title']}",
+                    value=f"{_discord_ts(r['remind_at'])}\n카테고리: {category}",
+                    inline=False,
+                )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+
+        @bot.tree.command(name="snooze", description="리마인더를 N분 뒤로 미룹니다")
+        @discord.app_commands.describe(
+            reminder_id="미룰 리마인더 (선택하거나 ID 입력)",
+            minutes="미룰 시간(분, 예: 30)",
+        )
+        @discord.app_commands.autocomplete(reminder_id=reminder_id_autocomplete)
+        async def cmd_snooze(interaction: discord.Interaction, reminder_id: int, minutes: int):
+            if interaction.user.id != bot.config.user_id:
+                await interaction.response.send_message("권한이 없습니다.", ephemeral=True)
+                return
+            if minutes <= 0:
+                await interaction.response.send_message("1분 이상 입력하세요.", ephemeral=True)
+                return
+            new_time = (datetime.now() + timedelta(minutes=minutes)).isoformat()
+            update_reminder(reminder_id, new_time)
+            await interaction.response.send_message(
+                f"리마인더 #{reminder_id}를 {minutes}분 뒤로 미뤘습니다.",
+                ephemeral=True,
+            )
 
     async def on_ready(self):
         print(f"Logged in as {self.user}")
+        await self.tree.sync()
+        print("슬래시 커맨드 동기화 완료")
 
         if self.test_mode:
             await self.send_test_dm()
@@ -160,14 +257,16 @@ class ReminderBot(discord.Client):
                 print(f"리마인더 전송 실패 id={reminder.get('id')}: {exc}")
 
     async def send_reminder(self, user: discord.User, reminder: dict):
-        message = build_message(reminder)
-        await self.send_dm_with_tts(
-            user,
-            message,
-            f"reminder_{reminder['id']}.mp3",
-            "음성 알림",
-        )
+        embed = build_embed(reminder)
+        view = SnoozeView(reminder)
+        await user.send(embed=embed, view=view)
         mark_as_sent(reminder["id"])
+        try:
+            tts_text = reminder["message"].replace("\n", ". ")
+            audio_path = await create_tts_file(tts_text, f"reminder_{reminder['id']}.mp3")
+            await user.send(content="🔊 음성 알림", file=discord.File(audio_path, filename=audio_path.name))
+        except Exception as exc:
+            print(f"TTS 전송 실패 (알림은 발송됨) id={reminder.get('id')}: {exc}")
 
 
 def parse_args() -> argparse.Namespace:

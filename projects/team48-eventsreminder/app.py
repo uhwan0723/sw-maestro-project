@@ -75,9 +75,10 @@ if selected and selected.get("eventClick"):
                     new_date = st.date_input("날짜", value=existing.date(), key=f"date_{r['id']}", label_visibility="collapsed")
                 with col_time:
                     new_time = st.time_input("시각", value=existing.time(), key=f"time_{r['id']}", label_visibility="collapsed")
-                new_dt = datetime.combine(new_date, new_time).isoformat()
-                if new_dt != r["remind_at"]:
-                    update_reminder(r["id"], new_dt)
+                new_dt = datetime.combine(new_date, new_time)
+                existing_truncated = existing.replace(microsecond=0)
+                if new_dt != existing_truncated:
+                    update_reminder(r["id"], new_dt.isoformat())
                     st.rerun()
                 with col_msg:
                     st.write(r["message"])
